@@ -66,6 +66,7 @@ def Lasso_regression(X_train,y_train,Lambda=0.2,threshold=0.001,iters=50000):
     while iter < iters:
         iter += 1
         
+        temp_theta=theta.copy()
         for k in range(X.shape[1]):
             # 计算z_k,p_k
             z_k = (X[:, k].T*X[:, k])[0, 0]
@@ -80,10 +81,12 @@ def Lasso_regression(X_train,y_train,Lambda=0.2,threshold=0.001,iters=50000):
                 theta_k = 0
             theta[k, 0] = theta_k
 
-        err_new = err_func(theta, X, y)
-        if abs(err_new - err) < threshold:
+        # err_new = err_func(theta, X, y)
+        # if abs(err_new - err) < threshold:
+        #     break
+        # err = err_new
+        if (np.abs(theta-temp_theta)<threshold).all():
             break
-        err = err_new
         # print('第{}次迭代，损失函数值为：{}'.format(iter, err))
 
     return theta, err, iter
